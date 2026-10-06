@@ -596,7 +596,7 @@
 
                     div.innerHTML = `
                         <div class="material-top">
-                            <input type="checkbox" id="${idMat}" value="${nomeMat}" onchange="calcolaMosche()">
+                            <input type="checkbox" id="${idMat}" value="${nomeMat}" onchange="gestisciCheckboxPrincipale('${idMat}')">
                             <label for="${idMat}">${nomeMat}</label>
                         </div>
                     ` + sizesHtml;
@@ -606,6 +606,18 @@
                 dettagliPrincipali.appendChild(divGrid);
                 contenitore.appendChild(dettagliPrincipali);
             }
+        }
+
+        // Funzione per spuntare/dissimulare automaticamente tutte le taglie di un materiale
+        function gestisciCheckboxPrincipale(idMat) {
+            const mainChk = document.getElementById(idMat);
+            const sizeCheckboxes = document.querySelectorAll(`.size-chk-${idMat}`);
+            
+            sizeCheckboxes.forEach(chk => {
+                chk.checked = mainChk.checked;
+            });
+
+            calcolaMosche();
         }
 
         function filtraInventario() {
@@ -737,10 +749,18 @@
 
             databaseModelliMosche.forEach(modello => {
                 const materialiObbligatori = modello.materialiObbligatori;
-                const amoRichiesto = materialiObbligatori[0];
+                const amoRichiesto = materialiObbligatori[0].toLowerCase();
                 const altriMateriali = materialiObbligatori.slice(1);
 
-                const matchingHookKeys = nomiMaterialiPosseduti.filter(poss => poss === amoRichiesto.toLowerCase() || poss.includes(amoRichiesto.toLowerCase()) || poss.includes("hooks"));
+                let hasExactHookInventory = false;
+                let sizesForExactHook = [];
+
+                for (const [poss, sizes] of Object.entries(materialeTagliePossedute)) {
+                    if (poss === amoRichiesto || poss.includes(amoRichiesto) || amoRichiesto.includes(poss)) {
+                        hasExactHookInventory = true;
+                        sizesForExactHook = sizesForExactHook.concat(sizes);
+                    }
+                }
 
                 let altriSoddisfatti = 0;
                 let altriVarianti = 0;
@@ -757,17 +777,12 @@
                 modello.taglie.forEach(tagliaStr => {
                     let possiedeAmoPerTaglia = false;
 
-                    if (matchingHookKeys.length > 0) {
+                    if (hasExactHookInventory) {
                         const tagliaNum = parseInt(tagliaStr);
-                        let sizesForThisHook = [];
-                        matchingHookKeys.forEach(k => {
-                            sizesForThisHook = sizesForThisHook.concat(materialeTagliePossedute[k]);
-                        });
-
-                        if (sizesForThisHook.length === 0) {
+                        if (sizesForExactHook.length === 0) {
                             possiedeAmoPerTaglia = true;
                         } else {
-                            const haTagliaCompatibile = sizesForThisHook.some(sz => Math.abs(parseInt(sz) - tagliaNum) <= 1);
+                            const haTagliaCompatibile = sizesForExactHook.some(sz => Math.abs(parseInt(sz) - tagliaNum) <= 1);
                             if (haTagliaCompatibile) possiedeAmoPerTaglia = true;
                         }
                     }
@@ -783,8 +798,9 @@
                     });
                 });
 
+                const hookSatisfiedLogic = hasExactHookInventory ? 1 : 0;
                 const totaleLogico = materialiObbligatori.length;
-                const soddisfattiLogici = altriSoddisfatti + altriVarianti + (matchingHookKeys.length > 0 ? 1 : 0);
+                const soddisfattiLogici = altriSoddisfatti + altriVarianti + hookSatisfiedLogic;
                 const percentuale = Math.round((soddisfattiLogici / totaleLogico) * 100);
 
                 const modelloCompleto = (taglieIdonee > 0);
@@ -794,20 +810,20 @@
                     const listaIngredienti = materialiObbligatori.map((mat, index) => {
                         let res;
                         if (index === 0) {
-                            res = { stato: matchingHookKeys.length > 0 ? 'esatto' : 'mancante', dettaglio: mat };
+                            res = { stato: hasExactHookInventory ? 'esatto' : 'mancante', dettaglio: mat };
                         } else {
                             res = valutaMateriale(materialeTagliePossedute, mat);
                         }
 
-                        let coloreStile = '#e53e3e'; // Red (Missing)
+                        let coloreStile = '#e53e3e';
                         let simbolo = '✗';
                         let etichettaTesto = mat;
 
                         if (res.stato === 'esatto') {
-                            coloreStile = '#68d391'; // Green (Exact match)
+                            coloreStile = '#68d391';
                             simbolo = '✓';
                         } else if (res.stato === 'variante') {
-                            coloreStile = '#4299e1'; // Light Blue (Alternative / Tolerated optional)
+                            coloreStile = '#4299e1';
                             simbolo = '≈';
                             etichettaTesto = `${mat} <span style="font-size: 0.75rem; opacity: 0.9;">(Tolerated alt. / Optional)</span>`;
                         }
@@ -818,7 +834,7 @@
                     }).join('');
 
                     const mancanti = materialiObbligatori.filter((mat, index) => {
-                        if (index === 0) return matchingHookKeys.length === 0;
+                        if (index === 0) return !hasExactHookInventory;
                         return valutaMateriale(materialeTagliePossedute, mat).stato === 'mancante';
                     });
 
