@@ -49,10 +49,10 @@
         }
 
         .header-logo {
-            width: 140px;  
+            width: 160px;  
             height: auto;
             object-fit: contain;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
             z-index: 2;
             margin-bottom: 12px;
             display: block;
@@ -137,7 +137,14 @@
         .badge-percentuale { background: #c6f6d5; color: #22543d; padding: 3px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: bold; }
         .badge-percentuale.parziale { background: #feebc8; color: #c05621; }
 
-        .mosca-card ul { margin: 0; padding-left: 18px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
+        .mosca-card ul { margin: 0; padding-left: 18px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px; }
+        
+        .sizes-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; background: var(--card-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem; }
+        .sizes-row-label { font-weight: 600; color: var(--text-muted); margin-right: 4px; }
+        .size-pill { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 0.75rem; border: 1px solid transparent; }
+        .size-pill.ok { background: rgba(104, 211, 145, 0.15); color: #68d391; border-color: rgba(104, 211, 145, 0.3); }
+        .size-pill.no { background: rgba(229, 62, 62, 0.1); color: #e53e3e; border-color: rgba(229, 62, 62, 0.2); }
+
         .materiale-mancante { display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: rgba(221, 107, 32, 0.1); color: #dd6b20; border-radius: 6px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(221, 107, 32, 0.2); }
         .messaggio-vuoto { color: var(--text-muted); font-style: italic; text-align: center; padding: 20px; background: var(--card-bg); border-radius: 10px; border: 1px dashed var(--border-color); font-size: 0.9rem; }
         
@@ -150,7 +157,7 @@
                 top: 50%;
                 left: 60px; 
                 transform: translateY(-50%);
-                width: 170px;  
+                width: 180px;  
                 margin-bottom: 0;
             }
         }
@@ -169,7 +176,7 @@
 <body>
 
     <div class="header">
-        <img src="retouch_2026100502184212.png.jpg" alt="Fly Bench Logo" class="header-logo">
+        <img src="Logo sito FlyBench.jpg" alt="Fly Bench Logo" class="header-logo">
         <div class="top-controls">
             <button class="btn-top" onclick="apriModalCustom()">+ Propose a Fly</button>
             <button class="btn-top" onclick="apriModalContatti()">✉ Contact Us</button>
@@ -274,7 +281,7 @@
             <div class="results-header-wrapper">
                 <h2>Flies you can tie</h2>
                 <label class="filter-toggle">
-                    <input type="checkbox" id="filtro-solo-100" onchange="calcolaMosche()"> Solo 100%
+                    <input type="checkbox" id="filtro-solo-100" onchange="calcolaMosche()"> Only 100% Match
                 </label>
             </div>
             <div id="risultati-completi" class="sezione-risultati" style="margin-top: 15px;"></div>
@@ -481,22 +488,67 @@
             }
         };
 
-        const databaseVariantiMosche = [
-            { tipo: "Dry Fly", etichetta: "Parachute Adams #12", amiPermessi: ["12"], materialiObbligatori: ["Parachute Hooks", "Tying Thread", "Rooster Capes / Necks", "Pheasant Tail Fibres", "Synthetic Dubbing"] },
-            { tipo: "Dry Fly", etichetta: "Parachute Adams #14", amiPermessi: ["14"], materialiObbligatori: ["Parachute Hooks", "Tying Thread", "Rooster Capes / Necks", "Pheasant Tail Fibres", "Synthetic Dubbing"] },
-            { tipo: "Dry Fly", etichetta: "Parachute Adams #16", amiPermessi: ["16"], materialiObbligatori: ["Parachute Hooks", "Tying Thread", "Rooster Capes / Necks", "Pheasant Tail Fibres", "Synthetic Dubbing"] },
-            { tipo: "Dry Fly", etichetta: "Elk Hair Caddis #10", amiPermessi: ["10"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Moose Hair", "Rooster Saddles / Hackles", "Hare's Mask Dubbing"] },
-            { tipo: "Dry Fly", etichetta: "Elk Hair Caddis #12", amiPermessi: ["12"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Moose Hair", "Rooster Saddles / Hackles", "Hare's Mask Dubbing"] },
-            { tipo: "Dry Fly", etichetta: "Elk Hair Caddis #14", amiPermessi: ["14"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Moose Hair", "Rooster Saddles / Hackles", "Hare's Mask Dubbing"] },
-            { tipo: "Dry Fly", etichetta: "Royal Wulff #12", amiPermessi: ["12"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Rooster Capes / Necks", "Rump / Flank Feathers", "Deer Hair", "Flat Tinsel", "Synthetic Dubbing"] },
-            { tipo: "Emerger", etichetta: "Klinkhamer #14", amiPermessi: ["14"], materialiObbligatori: ["Klinkhamer Hooks (Special)", "Tying Thread", "Cul de Canard (CDC)", "Rooster Capes / Necks", "Hare's Ear Dubbing"] },
-            { tipo: "Nymph", etichetta: "Pheasant Tail Nymph #14", amiPermessi: ["14"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Pheasant Tail Fibres", "Copper Wire"] },
-            { tipo: "Nymph", etichetta: "Hare's Ear #12", amiPermessi: ["12"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Flat Tinsel", "Hare's Ear Dubbing", "Rump / Flank Feathers"] },
-            { tipo: "Nymph", etichetta: "Copper John #14", amiPermessi: ["14"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Tungsten Beads", "Copper Wire", "Pheasant Tail Fibres", "Flat Tinsel"] },
-            { tipo: "Nymph", etichetta: "Perdigon #14", amiPermessi: ["14"], materialiObbligatori: ["Jig Hooks (60°/90° Eye)", "Tying Thread", "Slotted Tungsten Beads", "Flat Tinsel", "UV Resin"] },
-            { tipo: "Nymph", etichetta: "Frenchie #14", amiPermessi: ["14"], materialiObbligatori: ["Jig Hooks (60°/90° Eye)", "Tying Thread", "Slotted Tungsten Beads", "Pheasant Tail Fibres", "Copper Wire", "Synthetic Dubbing"] },
-            { tipo: "Streamer", etichetta: "Woolly Bugger #8", amiPermessi: ["8"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Marabou Feathers", "Flat Tinsel", "Rooster Capes / Necks"] },
-            { tipo: "Streamer", etichetta: "Zonker #6", amiPermessi: ["6"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Rabbit", "Flat Tinsel", "Synthetic Dubbing"] }
+        const databaseModelliMosche = [
+            { nome: "Parachute Adams", tipo: "Dry Fly", taglie: ["10", "12", "14", "16", "18"], materialiObbligatori: ["Parachute Hooks", "Tying Thread", "Rooster Capes / Necks", "Pheasant Tail Fibres", "Synthetic Dubbing"] },
+            { nome: "Elk Hair Caddis", tipo: "Dry Fly", taglie: ["10", "12", "14", "16"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Deer Hair", "Rooster Saddles / Hackles", "Hare's Mask Dubbing"] },
+            { nome: "Royal Wulff", tipo: "Dry Fly", taglie: ["10", "12", "14"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Rooster Capes / Necks", "Rump / Flank Feathers", "Deer Hair", "Flat Tinsel", "Synthetic Dubbing"] },
+            { nome: "Stimulator", tipo: "Dry Fly", taglie: ["8", "10", "12", "14"], materialiObbligatori: ["Wide Gape / Hopper Hooks", "Tying Thread", "Deer Hair", "Synthetic Dubbing", "Rooster Capes / Necks"] },
+            { nome: "Klinkhamer", tipo: "Emerger", taglie: ["12", "14", "16"], materialiObbligatori: ["Klinkhamer Hooks (Special)", "Tying Thread", "Cul de Canard (CDC)", "Rooster Capes / Necks", "Hare's Ear Dubbing"] },
+            { nome: "Blue Winged Olive", tipo: "Dry Fly", taglie: ["14", "16", "18", "20"], materialiObbligatori: ["Dry fly hook", "Tying Thread", "Rooster Capes / Necks", "Pheasant Tail Fibres", "Synthetic Dubbing"] },
+            { nome: "Griffith's Gnat", tipo: "Dry Fly", taglie: ["16", "18", "20", "22"], materialiObbligatori: ["Ultra-Fine Wire Hooks", "Tying Thread", "Dubbing (Synthetic)", "Rooster Capes / Necks"] },
+            { nome: "Pale Morning Dun", tipo: "Dry Fly", taglie: ["14", "16", "18"], materialiObbligatori: ["Dry fly hook", "Tying Thread", "Rooster Capes / Necks", "Synthetic Dubbing"] },
+            { nome: "Adams (Classica)", tipo: "Dry Fly", taglie: ["12", "14", "16", "18"], materialiObbligatori: ["Dry fly hook", "Tying Thread", "Pheasant Tail Fibres", "Rooster Capes / Necks", "Hare's Ear Dubbing"] },
+            { nome: "Dave's Hopper", tipo: "Terrestrial", taglie: ["8", "10", "12"], materialiObbligatori: ["Wide Gape / Hopper Hooks", "Tying Thread", "Deer Hair", "Synthetic Dubbing"] },
+            { nome: "Coachman", tipo: "Dry Fly", taglie: ["10", "12", "14"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Flat Tinsel", "Rooster Capes / Necks", "Rump / Flank Feathers"] },
+            { nome: "Chernobyl Ant", tipo: "Terrestrial", taglie: ["6", "8", "10"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Rabbit"] },
+            { nome: "Red Quill", tipo: "Dry Fly", taglie: ["14", "16", "18"], materialiObbligatori: ["Ultra-Fine Wire Hooks", "Tying Thread", "Pheasant Tail Fibres", "Rooster Capes / Necks"] },
+            { nome: "March Brown", tipo: "Dry Fly", taglie: ["10", "12", "14"], materialiObbligatori: ["Standard / Straight Eye (1XF - 2XF)", "Tying Thread", "Hungarian Partridge Feathers", "Hare's Ear Dubbing"] },
+            { nome: "Trico", type: "Dry Fly", taglie: ["18", "20", "22"], materialiObbligatori: ["Ultra-Fine Wire Hooks", "Tying Thread", "Rooster Capes / Necks", "Pheasant Tail Fibres"] },
+
+            { nome: "Pheasant Tail Nymph", tipo: "Nymph", taglie: ["12", "14", "16", "18"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Pheasant Tail Fibres", "Copper Wire - Copper"] },
+            { nome: "Hare's Ear", tipo: "Nymph", taglie: ["10", "12", "14", "16"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Hare's Ear Dubbing", "Flat Tinsel - Gold", "Rump / Flank Feathers"] },
+            { nome: "Copper John", tipo: "Nymph", taglie: ["12", "14", "16"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Tungsten Beads - Gold", "Copper Wire - Copper", "Pheasant Tail Fibres", "Flat Tinsel - Gold"] },
+            { nome: "Prince Nymph", tipo: "Nymph", taglie: ["10", "12", "14", "16"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Synthetic Dubbing", "Rooster Capes / Necks"] },
+            { nome: "Zebra Midge", tipo: "Nymph", taglie: ["16", "18", "20", "22"], materialiObbligatori: ["Grub Hooks", "Tying Thread", "Copper Wire - Silver", "UV Resin"] },
+            { nome: "Perdigon", tipo: "Nymph", taglie: ["14", "16", "18"], materialiObbligatori: ["Jig Hooks (60°/90° Eye)", "Tying Thread", "Slotted Tungsten Beads - Gold", "Flat Tinsel - Pearl", "UV Resin"] },
+            { nome: "RS2", tipo: "Nymph", taglie: ["16", "18", "20"], materialiObbligatori: ["Ultra-Fine Wire Hooks", "Tying Thread", "Pheasant Tail Fibres", "Cul de Canard (CDC)"] },
+            { nome: "San Juan Worm", tipo: "Nymph", taglie: ["10", "12", "14"], materialiObbligatori: ["Scud Hooks / Curved Emerger", "Tying Thread", "Rabbit"] },
+            { nome: "Frenchie", tipo: "Nymph", taglie: ["14", "16", "18"], materialiObbligatori: ["Jig Hooks (60°/90° Eye)", "Tying Thread", "Slotted Tungsten Beads - Gold", "Pheasant Tail Fibres", "Copper Wire - Copper", "Synthetic Dubbing"] },
+            { nome: "Zug Bug", tipo: "Nymph", taglie: ["10", "12", "14"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Flat Tinsel - Silver", "Hungarian Partridge Feathers"] },
+            { nome: "Hare's Ear Soft Hackle", tipo: "Nymph", taglie: ["12", "14", "16"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Hare's Ear Dubbing", "Hungarian Partridge Feathers"] },
+            { nome: "Caddis Pupa", tipo: "Nymph", taglie: ["12", "14", "16"], materialiObbligatori: ["Grub Hooks", "Tying Thread", "Synthetic Dubbing", "Hare's Mask Dubbing"] },
+            { nome: "Walt's Worm", tipo: "Nymph", taglie: ["12", "14", "16"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Hare's Ear Dubbing", "Copper Wire - Copper"] },
+            { nome: "Bead Head Stonefly", tipo: "Nymph", taglie: ["8", "10", "12"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Tungsten Beads - Gold", "Hare's Mask Dubbing"] },
+            { nome: "Guides Choice Hare's Ear", tipo: "Nymph", taglie: ["12", "14", "16"], materialiObbligatori: ["Standard Wet / Nymph (2XL-3XL)", "Tying Thread", "Tungsten Beads - Gold", "Hare's Ear Dubbing", "Flat Tinsel - Gold"] },
+
+            { nome: "Woolly Bugger", tipo: "Streamer", taglie: ["4", "6", "8", "10"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Marabou Feathers", "Flat Tinsel - Gold", "Rooster Capes / Necks"] },
+            { nome: "Muddler Minnow", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Mustad-style 3X/4X Heavy Streamer Hooks", "Tying Thread", "Rump / Flank Feathers", "Deer Hair", "Flat Tinsel - Gold"] },
+            { nome: "Mickey Finn", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Flat Tinsel - Silver", "Rabbit"] },
+            { nome: "Clouser Minnow", tipo: "Streamer", taglie: ["2", "4", "6", "8"], materialiObbligatori: ["Saltwater / Big Game Streamer Hooks", "Tying Thread", "Rabbit"] },
+            { nome: "Slump Buster", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Slotted Tungsten Beads - Gold", "Rabbit", "Flat Tinsel - Gold"] },
+            { nome: "Articulated Sex Dungeon", tipo: "Streamer", taglie: ["1", "2", "4"], materialiObbligatori: ["Articulated / Shanker Hooks", "Tying Thread", "Marabou Feathers", "Rabbit", "Deer Hair"] },
+            { nome: "Zoo Cougar", tipo: "Streamer", taglie: ["2", "4", "6"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Rabbit", "Deer Hair"] },
+            { nome: "Black Ghost", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Saltwater / Big Game Streamer Hooks", "Tying Thread", "Flat Tinsel - Silver", "Rooster Capes / Necks", "Rump / Flank Feathers"] },
+            { nome: "Sparkle Minnow", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Tungsten Beads - Gold", "Synthetic Dubbing", "Marabou Feathers"] },
+            { nome: "Zonker", tipo: "Streamer", taglie: ["2", "4", "6", "8"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Flat Tinsel - Silver", "Rabbit"] },
+            { nome: "Double Deceiver", tipo: "Streamer", taglie: ["1", "2"], materialiObbligatori: ["Articulated / Shanker Hooks", "Tying Thread", "Rooster Capes / Necks", "Rabbit"] },
+            { nome: "White Miller", tipo: "Streamer", taglie: ["6", "8", "10"], materialiObbligatori: ["Saltwater / Big Game Streamer Hooks", "Tying Thread", "Flat Tinsel - Silver", "Rooster Capes / Necks"] },
+            { nome: "Marabou Muddler", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Saltwater / Big Game Streamer Hooks", "Tying Thread", "Marabou Feathers", "Deer Hair"] },
+            { nome: "JJ Special", tipo: "Streamer", taglie: ["4", "6", "8"], materialiObbligatori: ["Long Shank Streamer (4XL - 8XL)", "Tying Thread", "Marabou Feathers", "Synthetic Dubbing"] },
+            { nome: "Kelly's Galloup Bangtail", tipo: "Streamer", taglie: ["1", "2", "4"], materialiObbligatori: ["Articulated / Shanker Hooks", "Tying Thread", "Marabou Feathers", "Rabbit"] },
+
+            { nome: "Foam Beetle", tipo: "Terrestrial", taglie: ["12", "14", "16"], materialiObbligatori: ["Short Shank / Beetle Hooks", "Tying Thread", "Synthetic Dubbing", "Rooster Capes / Necks"] },
+            { nome: "Japanese Beetle", tipo: "Terrestrial", taglie: ["12", "14", "16"], materialiObbligatori: ["Short Shank / Beetle Hooks", "Tying Thread", "Synthetic Dubbing", "Rooster Capes / Necks"] },
+            { nome: "Amy's Ant", tipo: "Terrestrial", taglie: ["10", "12", "14"], materialiObbligatori: ["Wide Gape / Hopper Hooks", "Tying Thread", "Synthetic Dubbing", "Rooster Capes / Necks"] },
+            { nome: "Letort Hopper", tipo: "Terrestrial", taglie: ["10", "12", "14"], materialiObbligatori: ["Cricket & Grasshopper Long-Leg Hooks", "Tying Thread", "Hare's Ear Dubbing", "Deer Hair", "Hungarian Partridge Feathers"] },
+            { nome: "Madam X", tipo: "Terrestrial", taglie: ["8", "10", "12"], materialiObbligatori: ["Cricket & Grasshopper Long-Leg Hooks", "Tying Thread", "Deer Hair", "Synthetic Dubbing"] },
+            { nome: "Joe's Hopper", tipo: "Terrestrial", taglie: ["10", "12", "14"], materialiObbligatori: ["Dry fly hook", "Tying Thread", "Synthetic Dubbing", "Deer Hair", "Rooster Saddles / Hackles"] },
+            { nome: "Extended Body Ant", tipo: "Terrestrial", taglie: ["14", "16", "18"], materialiObbligatori: ["Curved Ant Hooks", "Tying Thread", "Rooster Capes / Necks", "Synthetic Dubbing"] },
+            { nome: "Parachute Ant", tipo: "Terrestrial", taglie: ["14", "16", "18"], materialiObbligatori: ["Curved Ant Hooks", "Tying Thread", "Rooster Capes / Necks", "Synthetic Dubbing"] },
+            { nome: "Foam Cricket", tipo: "Terrestrial", taglie: ["10", "12", "14"], materialiObbligatori: ["Cricket & Grasshopper Long-Leg Hooks", "Tying Thread", "Synthetic Dubbing"] },
+            { nome: "Chernobyl Hopper", tipo: "Terrestrial", taglie: ["8", "10", "12"], materialiObbligatori: ["Cricket & Grasshopper Long-Leg Hooks", "Tying Thread", "Synthetic Dubbing"] },
+            { nome: "Hi-Vis Beetle", tipo: "Terrestrial", taglie: ["12", "14", "16"], materialiObbligatori: ["Short Shank / Beetle Hooks", "Tying Thread", "Rooster Capes / Necks"] },
+            { nome: "Orange Asher", tipo: "Terrestrial", taglie: ["12", "14", "16"], materialiObbligatori: ["Dry fly hook", "Tying Thread", "Rooster Capes / Necks", "Synthetic Dubbing"] }
         ];
 
         const contenitore = document.getElementById('contenitore-categorie');
@@ -610,16 +662,33 @@
             }
         }
 
-        // Funzione di match flessibile per materiali simili
-        function matchFlessibile(possedutoStr, richiestoStr) {
-            const p = possedutoStr.toLowerCase();
-            const r = richiestoStr.toLowerCase();
-            if (p === r || p.includes(r) || r.includes(p)) return true;
-            if (r.includes("tying thread") && p.includes("tying thread")) return true;
-            if (r.includes("tungsten") && p.includes("tungsten")) return true;
-            if (r.includes("dubbing") && p.includes("dubbing")) return true;
-            if (r.includes("hackle") && p.includes("hackle")) return true;
-            return false;
+        function valutaMateriale(possedutiMap, materialeRichiesto) {
+            const r = materialeRichiesto.toLowerCase();
+            
+            for (const [poss, sizes] of Object.entries(possedutiMap)) {
+                if (poss === r || poss.includes(r) || r.includes(poss)) {
+                    return { stato: 'esatto', dettaglio: materialeRichiesto };
+                }
+            }
+
+            if (r.includes("tying thread")) {
+                const haThreadGenerico = Object.keys(possedutiMap).some(p => p.includes("tying thread"));
+                if (haThreadGenerico) return { stato: 'variante', dettaglio: 'Alternative thread (tolerated)' };
+            }
+            if (r.includes("tungsten")) {
+                const haTungsten = Object.keys(possedutiMap).some(p => p.includes("tungsten") || p.includes("beads"));
+                if (haTungsten) return { stato: 'variante', dettaglio: 'Alternative bead (tolerated)' };
+            }
+            if (r.includes("dubbing")) {
+                const haDubbing = Object.keys(possedutiMap).some(p => p.includes("dubbing"));
+                if (haDubbing) return { stato: 'variante', dettaglio: 'Alternative dubbing (tolerated)' };
+            }
+            if (r.includes("hackle") || r.includes("capes")) {
+                const haPiuma = Object.keys(possedutiMap).some(p => p.includes("hackle") || p.includes("capes") || p.includes("feathers"));
+                if (haPiuma) return { stato: 'variante', dettaglio: 'Alternative feather (tolerated)' };
+            }
+
+            return { stato: 'mancante', dettaglio: materialeRichiesto };
         }
 
         function calcolaMosche() {
@@ -666,83 +735,120 @@
             let countCompleti = 0;
             let countParziali = 0;
 
-            databaseVariantiMosche.forEach(variante => {
-                const materialiObbligatori = variante.materialiObbligatori;
-
+            databaseModelliMosche.forEach(modello => {
+                const materialiObbligatori = modello.materialiObbligatori;
                 const amoRichiesto = materialiObbligatori[0];
                 const altriMateriali = materialiObbligatori.slice(1);
 
-                let possiedeAmoValido = false;
-                const hookLower = amoRichiesto.toLowerCase();
-                
-                const matchingHookKeys = nomiMaterialiPosseduti.filter(poss => matchFlessibile(poss, hookLower));
-
-                if (matchingHookKeys.length > 0) {
-                    const tagliaRichiesta = parseInt(variante.amiPermessi[0]);
-                    
-                    let sizesForThisHook = [];
-                    matchingHookKeys.forEach(k => {
-                        sizesForThisHook = sizesForThisHook.concat(materialeTagliePossedute[k]);
-                    });
-
-                    if (sizesForThisHook.length === 0) {
-                        possiedeAmoValido = true;
-                    } else {
-                        const haTagliaCompatibile = sizesForThisHook.some(sz => Math.abs(parseInt(sz) - tagliaRichiesta) <= 1);
-                        if (haTagliaCompatibile) possiedeAmoValido = true;
-                    }
-                }
+                const matchingHookKeys = nomiMaterialiPosseduti.filter(poss => poss === amoRichiesto.toLowerCase() || poss.includes(amoRichiesto.toLowerCase()) || poss.includes("hooks"));
 
                 let altriSoddisfatti = 0;
+                let altriVarianti = 0;
+                
                 altriMateriali.forEach(matReq => {
-                    const possiede = nomiMaterialiPosseduti.some(poss => matchFlessibile(poss, matReq));
-                    if (possiede) altriSoddisfatti++;
+                    const res = valutaMateriale(materialeTagliePossedute, matReq);
+                    if (res.stato === 'esatto') altriSoddisfatti++;
+                    else if (res.stato === 'variante') altriVarianti++;
+                });
+
+                const risulTaglie = [];
+                let taglieIdonee = 0;
+
+                modello.taglie.forEach(tagliaStr => {
+                    let possiedeAmoPerTaglia = false;
+
+                    if (matchingHookKeys.length > 0) {
+                        const tagliaNum = parseInt(tagliaStr);
+                        let sizesForThisHook = [];
+                        matchingHookKeys.forEach(k => {
+                            sizesForThisHook = sizesForThisHook.concat(materialeTagliePossedute[k]);
+                        });
+
+                        if (sizesForThisHook.length === 0) {
+                            possiedeAmoPerTaglia = true;
+                        } else {
+                            const haTagliaCompatibile = sizesForThisHook.some(sz => Math.abs(parseInt(sz) - tagliaNum) <= 1);
+                            if (haTagliaCompatibile) possiedeAmoPerTaglia = true;
+                        }
+                    }
+
+                    const accessoriTotaliValidi = (altriSoddisfatti + altriVarianti) === altriMateriali.length;
+                    const tagliaCompleta = possiedeAmoPerTaglia && accessoriTotaliValidi;
+                    
+                    if (tagliaCompleta) taglieIdonee++;
+
+                    risulTaglie.push({
+                        taglia: tagliaStr,
+                        ok: tagliaCompleta
+                    });
                 });
 
                 const totaleLogico = materialiObbligatori.length;
-                const soddisfattiLogici = altriSoddisfatti + (possiedeAmoValido ? 1 : 0);
+                const soddisfattiLogici = altriSoddisfatti + altriVarianti + (matchingHookKeys.length > 0 ? 1 : 0);
                 const percentuale = Math.round((soddisfattiLogici / totaleLogico) * 100);
 
-                const varianteCompleta = (percentuale === 100);
-                const varianteParziale = (percentuale >= 50) && !varianteCompleta;
+                const modelloCompleto = (taglieIdonee > 0);
+                const modelloParziale = (percentuale >= 50) && !modelloCompleto;
 
-                if (varianteCompleta || varianteParziale) {
+                if (modelloCompleto || modelloParziale) {
                     const listaIngredienti = materialiObbligatori.map((mat, index) => {
-                        let posseduto = false;
-                        
+                        let res;
                         if (index === 0) {
-                            posseduto = possiedeAmoValido;
+                            res = { stato: matchingHookKeys.length > 0 ? 'esatto' : 'mancante', dettaglio: mat };
                         } else {
-                            posseduto = nomiMaterialiPosseduti.some(poss => matchFlessibile(poss, mat));
+                            res = valutaMateriale(materialeTagliePossedute, mat);
                         }
 
-                        return `<li style="color: ${posseduto ? '#68d391' : '#e53e3e'}; font-weight: ${posseduto ? '600' : 'normal'}">
-                            ${posseduto ? '✓' : '✗'} ${mat}
+                        let coloreStile = '#e53e3e'; // Red (Missing)
+                        let simbolo = '✗';
+                        let etichettaTesto = mat;
+
+                        if (res.stato === 'esatto') {
+                            coloreStile = '#68d391'; // Green (Exact match)
+                            simbolo = '✓';
+                        } else if (res.stato === 'variante') {
+                            coloreStile = '#4299e1'; // Light Blue (Alternative / Tolerated optional)
+                            simbolo = '≈';
+                            etichettaTesto = `${mat} <span style="font-size: 0.75rem; opacity: 0.9;">(Tolerated alt. / Optional)</span>`;
+                        }
+
+                        return `<li style="color: ${coloreStile}; font-weight: 600">
+                            ${simbolo} ${etichettaTesto}
                         </li>`;
                     }).join('');
 
                     const mancanti = materialiObbligatori.filter((mat, index) => {
-                        if (index === 0) return !possiedeAmoValido;
-                        return !nomiMaterialiPosseduti.some(poss => matchFlessibile(poss, mat));
+                        if (index === 0) return matchingHookKeys.length === 0;
+                        return valutaMateriale(materialeTagliePossedute, mat).stato === 'mancante';
                     });
 
+                    const pillsHtml = risulTaglie.map(t => `
+                        <span class="size-pill ${t.ok ? 'ok' : 'no'}">
+                            #${t.taglia} ${t.ok ? '✓' : '✗'}
+                        </span>
+                    `).join('');
+
                     const cardHTML = `
-                        <div class="mosca-card ${!varianteCompleta ? 'parziale' : ''}">
+                        <div class="mosca-card ${!modelloCompleto ? 'parziale' : ''}">
                             <div class="mosca-header">
                                 <div class="mosca-info">
-                                    <h3 class="mosca-nome">${variante.etichetta}</h3>
+                                    <h3 class="mosca-nome">${modello.nome}</h3>
                                     <div class="badge-container">
-                                        <span class="badge-tipo">${variante.tipo}</span>
-                                        <span class="badge-percentuale ${!varianteCompleta ? 'parziale' : ''}">${percentuale}% Complete</span>
+                                        <span class="badge-tipo">${modello.tipo}</span>
+                                        <span class="badge-percentuale ${!modelloCompleto ? 'parziale' : ''}">${percentuale}% Match</span>
                                     </div>
                                 </div>
                             </div>
                             <ul>${listaIngredienti}</ul>
+                            <div class="sizes-row">
+                                <span class="sizes-row-label">Available Sizes:</span>
+                                ${pillsHtml}
+                            </div>
                             ${mancanti.length > 0 ? `<div class="materiale-mancante">Missing: ${mancanti.join(", ")}</div>` : ''}
                         </div>
                     `;
 
-                    if (varianteCompleta) {
+                    if (modelloCompleto) {
                         divCompleti.innerHTML += cardHTML;
                         countCompleti++;
                     } else if (!solo100Checked) {
@@ -752,7 +858,7 @@
                 }
             });
 
-            if (countCompleti === 0) divCompleti.innerHTML = '<div class="messaggio-vuoto">No 100% complete compatible flies found with current inventory.</div>';
+            if (countCompleti === 0) divCompleti.innerHTML = '<div class="messaggio-vuoto">No complete matching fly models found with current inventory.</div>';
             
             if (solo100Checked) {
                 bloccoParziali.style.display = 'none';
@@ -767,7 +873,6 @@
         caricaInventario();
         calcolaMosche();
         
-        // FORZATURA DEFINITIVA: Chiudi tutti i menu a tendina all'avvio
         document.querySelectorAll('details').forEach(det => det.open = false);
     </script>
 </body>
