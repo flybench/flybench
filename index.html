@@ -604,7 +604,6 @@
             const categorieDivs = document.querySelectorAll('.material-item');
             const inventarioUtente = [];
             const materialeTagliePossedute = {};
-            const taglieAmiUtente = [];
 
             categorieDivs.forEach(div => {
                 const mainChk = div.querySelector('.material-top input');
@@ -620,10 +619,6 @@
                     if (isSelected) {
                         inventarioUtente.push({ materiale, sizes });
                         materialeTagliePossedute[materiale.toLowerCase()] = sizes;
-
-                        if (materiale.toLowerCase().includes("hook") || materiale.toLowerCase().includes("hooks")) {
-                            sizes.forEach(sz => taglieAmiUtente.push(sz));
-                        }
                     }
                 }
             });
@@ -649,34 +644,35 @@
             databaseVariantiMosche.forEach(variante => {
                 const materialiObbligatori = variante.materialiObbligatori;
 
-                const amoRichiesto = materialiObbligatori.find(m => m.toLowerCase().includes("hook") || m.toLowerCase().includes("hooks"));
-                const altriMateriali = materialiObbligatori.filter(m => !m.toLowerCase().includes("hook") && !m.toLowerCase().includes("hooks"));
+                const amoRichiesto = materialiObbligatori[0];
+                const altriMateriali = materialiObbligatori.slice(1);
 
                 let possiedeAmoValido = false;
-                if (amoRichiesto) {
-                    const haTipoAmo = nomiMaterialiPosseduti.some(poss => poss.includes(amoRichiesto.toLowerCase()));
+                const hookLower = amoRichiesto.toLowerCase();
+                
+                const matchingHookKeys = nomiMaterialiPosseduti.filter(poss => poss === hookLower || poss.includes(hookLower));
+
+                if (matchingHookKeys.length > 0) {
                     const tagliaRichiesta = parseInt(variante.amiPermessi[0]);
                     
-                    const haTagliaCompatibile = taglieAmiUtente.some(sz => {
-                        const t = parseInt(sz);
-                        return Math.abs(t - tagliaRichiesta) <= 1;
+                    let sizesForThisHook = [];
+                    matchingHookKeys.forEach(k => {
+                        sizesForThisHook = sizesForThisHook.concat(materialeTagliePossedute[k]);
                     });
 
-                    if (taglieAmiUtente.length === 0 && haTipoAmo) {
+                    if (sizesForThisHook.length === 0) {
                         possiedeAmoValido = true;
-                    } else if (haTagliaCompatibile && haTipoAmo) {
-                        possiedeAmoValido = true;
+                    } else {
+                        const haTagliaCompatibile = sizesForThisHook.some(sz => Math.abs(parseInt(sz) - tagliaRichiesta) <= 1);
+                        if (haTagliaCompatibile) possiedeAmoValido = true;
                     }
-                } else {
-                    possiedeAmoValido = true;
                 }
 
                 let altriSoddisfatti = 0;
                 altriMateriali.forEach(matReq => {
                     const mClean = matReq.trim().toLowerCase();
                     const possiede = nomiMaterialiPosseduti.some(poss => {
-                        if (poss === mClean) return true;
-                        if (poss.includes(mClean)) return true;
+                        if (poss === mClean || poss.includes(mClean)) return true;
                         if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
                         if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
                         return false;
@@ -684,43 +680,39 @@
                     if (possiede) altriSoddisfatti++;
                 });
 
-                const totaleLogico = altriMateriali.length + (amoRichiesto ? 1 : 0);
+                const totaleLogico = materialiObbligatori.length;
                 const soddisfattiLogici = altriSoddisfatti + (possiedeAmoValido ? 1 : 0);
-
-                const percentuale = totaleLogico > 0 ? Math.round((soddisfattiLogici / totaleLogico) * 100) : 0;
+                const percentuale = Math.round((soddisfattiLogici / totaleLogico) * 100);
 
                 const varianteCompleta = (percentuale === 100);
                 const varianteParziale = (percentuale >= 50) && !varianteCompleta;
 
                 if (varianteCompleta || varianteParziale) {
-                    const listaIngredienti = materialiObbligatori.map(mat => {
-                        const mClean = mat.trim().toLowerCase();
-                        let posseduto = nomiMaterialiPosseduti.some(poss => {
-                            if (mClean.includes("hook") || mClean.includes("hooks")) {
-                                if (poss === mClean || poss.includes(mClean)) return possedutoAmo(poss, variante.amiPermessi, taglieAmiUtente);
+                    const listaIngredienti = materialiObbligatori.map((mat, index) => {
+                        let posseduto = false;
+                        
+                        if (index === 0) {
+                            posseduto = possiedeAmoValido;
+                        } else {
+                            const mClean = mat.trim().toLowerCase();
+                            posseduto = nomiMaterialiPosseduti.some(poss => {
+                                if (poss === mClean || poss.includes(mClean)) return true;
+                                if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
+                                if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
                                 return false;
-                            }
-                            if (poss === mClean) return true;
-                            if (poss.includes(mClean)) return true;
-                            if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
-                            if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
-                            return false;
-                        });
+                            });
+                        }
 
                         return `<li style="color: ${posseduto ? '#68d391' : '#e53e3e'}; font-weight: ${posseduto ? '600' : 'normal'}">
                             ${posseduto ? '✓' : '✗'} ${mat}
                         </li>`;
                     }).join('');
 
-                    const mancanti = materialiObbligatori.filter(mat => {
+                    const mancanti = materialiObbligatori.filter((mat, index) => {
+                        if (index === 0) return !possiedeAmoValido;
                         const mClean = mat.trim().toLowerCase();
                         return !nomiMaterialiPosseduti.some(poss => {
-                            if (mClean.includes("hook") || mClean.includes("hooks")) {
-                                if (poss === mClean || poss.includes(mClean)) return possedutoAmo(poss, variante.amiPermessi, taglieAmiUtente);
-                                return false;
-                            }
-                            if (poss === mClean) return true;
-                            if (poss.includes(mClean)) return true;
+                            if (poss === mClean || poss.includes(mClean)) return true;
                             if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
                             if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
                             return false;
@@ -762,7 +754,7 @@
         caricaInventario();
         calcolaMosche();
         
-        // FORZATURA: Chiudi tutti i menu a tendina istantaneamente all'avvio
+        // FORZATURA DEFINITIVA: Chiudi tutti i menu a tendina all'avvio
         document.querySelectorAll('details').forEach(det => det.open = false);
     </script>
 </body>
