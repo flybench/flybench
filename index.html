@@ -757,16 +757,13 @@
             if (countParziali === 0) divParziali.innerHTML = '<div class="messaggio-vuoto">No partial matches found.</div>';
         }
 
-        function possedutoAmo(poss, amiPermessi, taglieAmiUtente) {
-            if (!poss.includes("hook") && !poss.includes("hooks")) return false;
-            if (taglieAmiUtente.length === 0) return true;
-            return amiPermessi.some(a => taglieAmiUtente.includes(a));
-        }
-
         renderizzaInventario();
         calcolaTestina();
         caricaInventario();
         calcolaMosche();
+        
+        // FORZATURA: Chiudi tutti i menu a tendina istantaneamente all'avvio
+        document.querySelectorAll('details').forEach(det => det.open = false);
     </script>
 </body>
 </html>
