@@ -48,7 +48,6 @@
             pointer-events: none;
         }
 
-        /* Stile Logo per Smartphone (Centrato e visibile) */
         .header-logo {
             width: 140px;  
             height: auto;
@@ -119,6 +118,11 @@
         .advisor-result { background: var(--panel-bg); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.9rem; line-height: 1.4; color: var(--text-color); }
         .advisor-highlight { font-weight: bold; color: var(--primary); }
 
+        .results-header-wrapper { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 0; position: sticky; top: 0; background: var(--panel-bg); z-index: 10; }
+        .results-header-wrapper h2 { border: none; padding: 0; margin: 0; position: static; }
+        .filter-toggle { font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer; color: var(--text-muted); font-weight: 600; }
+        .filter-toggle input { accent-color: var(--primary); cursor: pointer; transform: scale(1.1); }
+
         .sezione-risultati { margin-bottom: 25px; }
         .mosca-card { background: var(--panel-bg); border: 1px solid var(--border-color); border-left: 5px solid #38a169; padding: 15px; margin-bottom: 14px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); transition: transform 0.2s; }
         .mosca-card:hover { transform: translateY(-2px); }
@@ -140,7 +144,6 @@
         .btn-reset { display: block; width: 100%; margin-top: 20px; padding: 10px 18px; background-color: #e53e3e; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; box-shadow: 0 2px 5px rgba(229, 62, 62, 0.2); }
         .btn-reset:hover { background-color: #c53030; }
 
-        /* Stile Logo per PC (Sulla sinistra) */
         @media (min-width: 951px) {
             .header-logo {
                 position: absolute;
@@ -200,7 +203,7 @@
         </div>
     </div>
 
-    <!-- Propose Custom Fly Modal (Without Photo Upload) -->
+    <!-- Propose Custom Fly Modal -->
     <div id="modal-custom" class="modal-overlay" onclick="chiudiModalFuori(event, 'modal-custom')">
         <div class="modal-content">
             <button class="modal-close" onclick="chiudiModalCustom()">✕</button>
@@ -268,11 +271,18 @@
 
         <!-- Colonna Risultati -->
         <div id="colonna-risultati" class="colonna hidden-mobile">
-            <h2>Flies you can tie</h2>
-            <div id="risultati-completi" class="sezione-risultati"></div>
+            <div class="results-header-wrapper">
+                <h2>Flies you can tie</h2>
+                <label class="filter-toggle">
+                    <input type="checkbox" id="filtro-solo-100" onchange="calcolaMosche()"> Solo 100%
+                </label>
+            </div>
+            <div id="risultati-completi" class="sezione-risultati" style="margin-top: 15px;"></div>
             
-            <h2 style="margin-top: 25px; border-color: #feebc8;">Partial matches</h2>
-            <div id="risultati-parziali" class="sezione-risultati"></div>
+            <div id="blocco-parziali">
+                <h2 style="margin-top: 25px; border-color: #feebc8;">Partial matches</h2>
+                <div id="risultati-parziali" class="sezione-risultati" style="margin-top: 15px;"></div>
+            </div>
         </div>
     </div>
 
@@ -600,6 +610,18 @@
             }
         }
 
+        // Funzione di match flessibile per materiali simili
+        function matchFlessibile(possedutoStr, richiestoStr) {
+            const p = possedutoStr.toLowerCase();
+            const r = richiestoStr.toLowerCase();
+            if (p === r || p.includes(r) || r.includes(p)) return true;
+            if (r.includes("tying thread") && p.includes("tying thread")) return true;
+            if (r.includes("tungsten") && p.includes("tungsten")) return true;
+            if (r.includes("dubbing") && p.includes("dubbing")) return true;
+            if (r.includes("hackle") && p.includes("hackle")) return true;
+            return false;
+        }
+
         function calcolaMosche() {
             const categorieDivs = document.querySelectorAll('.material-item');
             const inventarioUtente = [];
@@ -627,6 +649,9 @@
 
             const divCompleti = document.getElementById('risultati-completi');
             const divParziali = document.getElementById('risultati-parziali');
+            const bloccoParziali = document.getElementById('blocco-parziali');
+            const solo100Checked = document.getElementById('filtro-solo-100').checked;
+
             divCompleti.innerHTML = '';
             divParziali.innerHTML = '';
 
@@ -650,7 +675,7 @@
                 let possiedeAmoValido = false;
                 const hookLower = amoRichiesto.toLowerCase();
                 
-                const matchingHookKeys = nomiMaterialiPosseduti.filter(poss => poss === hookLower || poss.includes(hookLower));
+                const matchingHookKeys = nomiMaterialiPosseduti.filter(poss => matchFlessibile(poss, hookLower));
 
                 if (matchingHookKeys.length > 0) {
                     const tagliaRichiesta = parseInt(variante.amiPermessi[0]);
@@ -670,13 +695,7 @@
 
                 let altriSoddisfatti = 0;
                 altriMateriali.forEach(matReq => {
-                    const mClean = matReq.trim().toLowerCase();
-                    const possiede = nomiMaterialiPosseduti.some(poss => {
-                        if (poss === mClean || poss.includes(mClean)) return true;
-                        if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
-                        if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
-                        return false;
-                    });
+                    const possiede = nomiMaterialiPosseduti.some(poss => matchFlessibile(poss, matReq));
                     if (possiede) altriSoddisfatti++;
                 });
 
@@ -694,13 +713,7 @@
                         if (index === 0) {
                             posseduto = possiedeAmoValido;
                         } else {
-                            const mClean = mat.trim().toLowerCase();
-                            posseduto = nomiMaterialiPosseduti.some(poss => {
-                                if (poss === mClean || poss.includes(mClean)) return true;
-                                if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
-                                if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
-                                return false;
-                            });
+                            posseduto = nomiMaterialiPosseduti.some(poss => matchFlessibile(poss, mat));
                         }
 
                         return `<li style="color: ${posseduto ? '#68d391' : '#e53e3e'}; font-weight: ${posseduto ? '600' : 'normal'}">
@@ -710,13 +723,7 @@
 
                     const mancanti = materialiObbligatori.filter((mat, index) => {
                         if (index === 0) return !possiedeAmoValido;
-                        const mClean = mat.trim().toLowerCase();
-                        return !nomiMaterialiPosseduti.some(poss => {
-                            if (poss === mClean || poss.includes(mClean)) return true;
-                            if (mClean.includes("tying thread") && poss.includes("tying thread")) return true;
-                            if (mClean.includes("tungsten") && poss.includes("tungsten")) return true;
-                            return false;
-                        });
+                        return !nomiMaterialiPosseduti.some(poss => matchFlessibile(poss, mat));
                     });
 
                     const cardHTML = `
@@ -738,7 +745,7 @@
                     if (varianteCompleta) {
                         divCompleti.innerHTML += cardHTML;
                         countCompleti++;
-                    } else {
+                    } else if (!solo100Checked) {
                         divParziali.innerHTML += cardHTML;
                         countParziali++;
                     }
@@ -746,7 +753,13 @@
             });
 
             if (countCompleti === 0) divCompleti.innerHTML = '<div class="messaggio-vuoto">No 100% complete compatible flies found with current inventory.</div>';
-            if (countParziali === 0) divParziali.innerHTML = '<div class="messaggio-vuoto">No partial matches found.</div>';
+            
+            if (solo100Checked) {
+                bloccoParziali.style.display = 'none';
+            } else {
+                bloccoParziali.style.display = 'block';
+                if (countParziali === 0) divParziali.innerHTML = '<div class="messaggio-vuoto">No partial matches found.</div>';
+            }
         }
 
         renderizzaInventario();
