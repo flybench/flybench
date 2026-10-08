@@ -349,15 +349,16 @@
                 case "10": beadSize = "3.5mm - 4.0mm"; break;
                 case "12": beadSize = "3.0mm - 3.5mm"; break;
                 case "14": beadSize = "2.5mm - 3.0mm"; break;
-                case "16": beadSize = "2.5mm"; break;
+                case "16": beadSize = "2.0mm - 2.5mm"; break;
                 case "18":
                 case "20": 
-                case "22": beadSize = "2.5mm or micro bead"; break;
+                case "22": beadSize = "1.5mm - 2.0mm (Micro Bead)"; break;
             }
 
             resultBox.innerHTML = `Recommended: <span class="advisor-highlight">${beadShape} (${beadSize})</span>`;
         }
 
+        // DATABASE DEFINITIVO ESPANSO E PROFESSIONALE CON TUTTE LE MISURE DI PERLINE (2mm, 2.3mm, 3.2mm ECC.) E VARIANTI DI HACKLE/FILATI
         const categorieMaterialiFlat = {
             "Fly Hooks": {
                 items: [
@@ -383,106 +384,114 @@
                 hasSizes: true,
                 isHook: true
             },
-            "Beads (Tungsten & Brass)": {
+            "Beads (Tungsten & Brass) - Extended Sizes": {
                 items: [
-                    "Tungsten Beads - Gold (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Tungsten Beads - Silver (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Tungsten Beads - Copper (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Tungsten Beads - Black Nickel (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Faceted Tungsten Beads - Gold (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Faceted Tungsten Beads - Silver (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Faceted Tungsten Beads - Copper (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Faceted Tungsten Beads - Black (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Slotted Tungsten Beads - Gold (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Slotted Tungsten Beads - Silver (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Slotted Tungsten Beads - Copper (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Slotted Tungsten Beads - Black Nickel (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Brass Beads - Gold (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Brass Beads - Silver (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Brass Beads - Copper (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
-                    "Brass Beads - Black (2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)"
+                    "Tungsten Beads - Gold (1.5mm, 2.0mm, 2.3mm, 2.5mm, 2.8mm, 3.0mm, 3.2mm, 3.5mm, 3.8mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Tungsten Beads - Silver (1.5mm, 2.0mm, 2.3mm, 2.5mm, 2.8mm, 3.0mm, 3.2mm, 3.5mm, 3.8mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Tungsten Beads - Copper (1.5mm, 2.0mm, 2.3mm, 2.5mm, 2.8mm, 3.0mm, 3.2mm, 3.5mm, 3.8mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Tungsten Beads - Black Nickel (1.5mm, 2.0mm, 2.3mm, 2.5mm, 2.8mm, 3.0mm, 3.2mm, 3.5mm, 3.8mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Faceted Tungsten Beads - Gold (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Faceted Tungsten Beads - Silver (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Faceted Tungsten Beads - Copper (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Faceted Tungsten Beads - Black (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Slotted Tungsten Beads - Gold (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Slotted Tungsten Beads - Silver (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Slotted Tungsten Beads - Copper (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Slotted Tungsten Beads - Black Nickel (2.0mm, 2.3mm, 2.5mm, 3.0mm, 3.2mm, 3.5mm, 4.0mm, 4.5mm, 5.0mm)",
+                    "Brass Beads - Gold (2.0mm, 2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Brass Beads - Silver (2.0mm, 2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Brass Beads - Copper (2.0mm, 2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm)",
+                    "Brass Beads - Black (2.0mm, 2.5mm, 3.0mm, 3.5mm, 4.0mm, 4.5mm)"
                 ],
                 hasSizes: true,
                 isHook: false
             },
-            "Tying Threads": {
+            "Tying Threads & Floss": {
                 items: [
-                    "Tying Thread - 12/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink)",
-                    "Tying Thread - 8/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink)",
-                    "Tying Thread - 6/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink)",
-                    "Tying Thread - 3/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink)"
+                    "Tying Thread - 16/0 (Ultra-Fine / Micro)",
+                    "Tying Thread - 14/0 (Super Fine)",
+                    "Tying Thread - 12/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink, Fluoro Green, Fluoro Orange)",
+                    "Tying Thread - 8/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink, Fluoro Green, Fluoro Orange)",
+                    "Tying Thread - 6/0 (White, Black, Gray, Sand, Brown, Olive, Light Olive, Red, Orange, Yellow, Cream, Pink, Blue, Purple)",
+                    "Tying Thread - 3/0 (Heavy / Strong - White, Black, Brown, Olive, Red)",
+                    "Monofilament / Transparent Thread (Fine)",
+                    "Floss - Silk / Rayon (Various Colors)"
                 ],
                 hasSizes: true,
                 isHook: false
             },
-            "Tinsel & Wires": {
+            "Tinsel, Wires & Ribbing": {
                 items: [
-                    "Flat Tinsel - Gold (Extra Small, Medium, Large, XL)",
-                    "Flat Tinsel - Silver (Extra Small, Medium, Large, XL)",
-                    "Flat Tinsel - Copper (Extra Small, Medium, Large, XL)",
-                    "Flat Tinsel - Pearl (Extra Small, Medium, Large, XL)",
-                    "Oval Tinsel - Gold (Extra Small, Medium, Large)",
-                    "Oval Tinsel - Silver (Extra Small, Medium, Large)",
-                    "Copper Wire - Copper (0.10mm, 0.18mm, 0.30mm)",
-                    "Copper Wire - Gold (0.10mm, 0.18mm, 0.30mm)",
-                    "Copper Wire - Silver (0.10mm, 0.18mm, 0.30mm)",
-                    "Lead Wire (0.1mm, 0.2mm, 0.3mm, 0.4mm, 0.5mm, 0.6mm, 0.7mm, 0.8mm, 0.9mm, 1mm)"
+                    "Flat Tinsel - Gold (Extra Small, Small, Medium, Large, XL)",
+                    "Flat Tinsel - Silver (Extra Small, Small, Medium, Large, XL)",
+                    "Flat Tinsel - Copper (Extra Small, Medium, Large)",
+                    "Flat Tinsel - Pearl / Holographic (Extra Small, Small, Medium, Large)",
+                    "Oval Tinsel - Gold (Extra Small, Small, Medium, Large)",
+                    "Oval Tinsel - Silver (Extra Small, Small, Medium, Large)",
+                    "Copper Wire - Copper (0.09mm, 0.10mm, 0.18mm, 0.20mm, 0.30mm)",
+                    "Copper Wire - Gold (0.09mm, 0.10mm, 0.18mm, 0.20mm, 0.30mm)",
+                    "Copper Wire - Silver (0.09mm, 0.10mm, 0.18mm, 0.20mm, 0.30mm)",
+                    "Lead Wire / Non-Toxic Wire (0.1mm, 0.2mm, 0.3mm, 0.4mm, 0.5mm, 0.6mm, 0.7mm, 0.8mm, 0.9mm, 1.0mm)"
                 ],
                 hasSizes: true,
                 isHook: false
             },
-            "Feathers (Capes, Saddles & Others)": {
+            "Feathers (Capes, Saddles, Hen & Hackle)": {
                 items: [
-                    "Rooster Capes / Necks (Grizzly, Brown, White, Ginger, Dun, Light Dun, Fiery Brown, Black, Yellow)",
-                    "Hen Capes / Necks (Brown, Partridge-marked)",
-                    "Rooster Saddles / Hackles (Brown)",
-                    "Pheasant Tail Fibres (Natural Copper Brown, Olive, Dark Brown, Red, Black)",
-                    "Rump / Flank Feathers (Pearl Gray, Striated Brown, Iridescent Green/Bronze)",
-                    "Cul de Canard (CDC) (Light Natural)",
+                    "Rooster Capes / Necks - Premium (Grizzly, Brown, White, Ginger, Dark Dun, Light Dun, Medium Dun, Badger, Cree, Black, Furnace, Coch-y-bonddu)",
+                    "Hen Capes / Necks (Brown, Grizzly, Partridge-marked, Black, Dun)",
+                    "Rooster Saddles / Hackles (Grizzly, Brown, White, Black, Badger, Fluoro colors)",
+                    "Hen Saddles / Soft Hackles (Various colors)",
+                    "Pheasant Tail Fibres (Natural Copper Brown, Olive, Dark Brown, Red, Black, Bleached)",
+                    "Rump / Flank Feathers (Mallard, Teal, Wood Duck, Pearl Gray, Striated Brown, Iridescent Green/Bronze)",
+                    "Cul de Canard (CDC) (Light Natural, Dark Natural, White, Yellow, Olive, Brown, Black, Red)",
                     "Hungarian Partridge Feathers (Striated Gray/Brown, Dark Brown)",
-                    "Marabou Feathers (Black, Yellow, Red, White, Olive, Chartreuse)"
+                    "Marabou Feathers (Black, Yellow, Red, White, Olive, Chartreuse, Pink, Purple, Orange, Grizzly)",
+                    "Ostrich Herl (Black, Peacock, Olive, Brown, White, Red)",
+                    "Peacock Herl (Standard, Straggle string)"
                 ],
                 hasSizes: true,
                 isHook: false
             },
-            "Hair & Fur": {
+            "Hair, Fur & Body Elements": {
                 items: [
                     "Moose Hair (Natural, Natural dark)",
-                    "Deer Hair (Natural, Natural dark)",
-                    "Roe Deer Hair (Natural, Natural dark)",
-                    "Rabbit (Natural, Natural dark)"
+                    "Deer Hair / Comparadun Hair (Natural, Natural dark, Bleached, Dyed colors)",
+                    "Roe Deer Hair (Natural, Natural dark, Dyed)",
+                    "Elk Hair (Natural, Dark)",
+                    "Calf Tail / Kip Tail (White, Yellow, Red, Orange, Black)",
+                    "Squirrel Tail (Natural, Dyed colors)",
+                    "Arctic Fox / Tail (White, Black, Olive, Chartreuse)",
+                    "Rabbit Zonker Strips & Crosscut (Natural, Olive, Black, Brown, White, Fluoro colors)",
+                    "Hare's Mask / Dubbing fur (Natural, Complete mask)"
                 ],
                 hasSizes: true,
                 isHook: false
             },
-            "Dubbing (Natural)": {
+            "Dubbing (Natural & Synthetic)": {
                 items: [
-                    "Hare's Ear Dubbing (Beige, Iron dun golden olive, Cinnamon, Brown beige)",
-                    "Hare's Mask Dubbing (Cinnamon, Brown beige)",
-                    "Muskrat Underfur (Iron dun golden olive, Beige)",
-                    "Beaver Dubbing (Natural, Brown, Black, Olive)"
+                    "Hare's Ear Dubbing (Beige, Iron dun golden olive, Cinnamon, Brown beige, Dark brown)",
+                    "Hare's Mask Dubbing (Cinnamon, Brown beige, Natural)",
+                    "Muskrat Underfur (Iron dun golden olive, Beige, Dark)",
+                    "Beaver Dubbing (Natural, Brown, Black, Olive, Gray)",
+                    "Seal's Fur / Substitute Dubbing (Various classic and bright colors)",
+                    "Synthetic Dubbing - ICE Dub / Flash (Beige, Green Peacock, Bronze Peacock, Orange, Yellow, Green, Silver, Brown, Black, Olive, UV Pink, Pearl)",
+                    "Synthetic Dubbing - Standard Dry Fly (Various shades)"
                 ],
                 hasSizes: true,
                 isHook: false
             },
-            "Dubbing (Synthetic)": {
-                items: [
-                    "Synthetic Dubbing (Beige, Green Peacock, Bronze Peacock, Orange, Yellow, Green, Silver, Brown, Black, Olive)"
-                ],
-                hasSizes: true,
-                isHook: false
-            },
-            "Glues & Resins": {
+            "Glues, Resins & Chems": {
                 items: [
                     "Super Glue (Cyanoacrylate)",
-                    "Nitrocellulose Varnish",
+                    "Nitrocellulose Varnish / Head Cement",
                     "2-Part Epoxy",
-                    "UV Resin",
+                    "UV Resin (Thin, Thick, Flex)",
                     "Vinyl Varnish",
                     "Polyurethane Varnish",
                     "Shellac",
                     "Tying Wax",
-                    "Liquid Silicone"
+                    "Liquid Silicone / Floatant"
                 ],
                 hasSizes: false
             }
@@ -888,7 +897,7 @@
         caricaInventario();
         calcolaMosche();
         
-        document.querySelectorAll('details').forEach(det => det.open = false);
+        document.querySelectorAll('details').details = false;
     </script>
 </body>
 </html>
